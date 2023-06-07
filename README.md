@@ -15,7 +15,7 @@ A solução da Alimentech é um aplicativo móvel que oferece uma interface aces
 
 # Arquitetura
 
-<img align="center" alt="Diagrama-UML" src="https://github.com/augustopdro/Alimentech-DBE/blob/master/ArquiteturaAlimentech.jpg?raw=true">
+<img align="center" alt="Diagrama-UML" src="ArquiteturaAlimentech.jpeg">
 
 ---
 
