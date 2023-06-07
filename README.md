@@ -13,6 +13,12 @@ A solução da Alimentech é um aplicativo móvel que oferece uma interface aces
 - **Assistente de Voz:** O aplicativo também possui um assistente de voz para usuários com dificuldades de leitura ou escrita.
 ---
 
+# Arquitetura
+
+<img align="center" alt="Diagrama-UML" src="https://github.com/augustopdro/Alimentech-DBE/blob/master/ArquiteturaAlimentech.jpg?raw=true">
+
+---
+
 ## Pré-requisitos
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
