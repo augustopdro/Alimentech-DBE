@@ -6,10 +6,16 @@ import br.com.fiap.alimentech.models.Recurso;
 import br.com.fiap.alimentech.models.Usuario;
 import br.com.fiap.alimentech.repositories.InstrucaoRepository;
 import br.com.fiap.alimentech.repositories.UsuarioRepository;
+import br.com.fiap.alimentech.utils.ChatRequest;
+import br.com.fiap.alimentech.utils.Message;
+import br.com.fiap.alimentech.utils.OpenAiResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +23,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class InstrucaoService {
@@ -34,52 +43,38 @@ public class InstrucaoService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Instrucao cadastrarInstrucao(long userId, Recurso recurso) {
+
+    public Instrucao cadastrarInstrucao(long userId) {
         Usuario usuario = recuperarUsuario(userId);
+        Recurso recurso = recuperarRecurso(userId);
 
-        String KEY = "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";
-        String PROMPT = "Agora você é um especialista em agricultura e precisa ajudar pessoas com insegurança alimentar" +
-                " a fazer suas próprias hortas em casa. Responda com um passo a passo bem didático e acessível " +
-                "para pessoas totalmente leigas e use como base essas limitações: " +
-                "Área de plantio disponível: %s, Região: %s, Prazo para colheita: %s, " +
-                "Dinheiro para investir em sementes: %s";
+        String KEY = "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";
+        String MODEL = "gpt-3.5-turbo";
 
-        String formattedPrompt = String.format(PROMPT, recurso.getAreaDoTerreno(), usuario.getCidade(),
-                recurso.getPrazoParaColheita(), recurso.getDinheiroDisponivel());
+        String systemMessage = "Você é um assistente que dá dicas sobre plantio para consumo próprio. " +
+                "Lembre-se de fornecer informações sobre técnicas de agricultura sustentável, como agricultura vertical, aquaponia";
+        String userMessage = String.format("Eu possuo uma área de %sm² para plantio, moro na região de %s, " +
+                        "consigo esperar %s até a colheita e tenho os seguintes recursos: %s",
+                recurso.getAreaDoTerreno(), usuario.getCidade(), recurso.getPrazoParaColheita(), recurso.getDinheiroDisponivel());
 
-        long MAX_TOKENS = 100;
-        double TEMPERATURE = 0.7;
-        String MODEL = "text-davinci-003";
+        List<Message> messages = new ArrayList<>();
+        messages.add(new Message("system", systemMessage));
+        messages.add(new Message("user", userMessage));
 
-        try {
-            DefaultHttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost
-                    ("https://api.openai.com/v1/completions");
+        ChatRequest chatRequest = new ChatRequest(MODEL, messages);
 
-            StringEntity entity = new StringEntity
-                    ("{" +
-                            "\"model\" : " +
-                            "\"" +
-                            MODEL +
-                            "\"," +
-                            "\"prompt\" : \"" +
-                            PROMPT +
-                            "\"," +
-                            "\"max_tokens\" : " +
-                            MAX_TOKENS +
-                            "," +
-                            "\"temperature\" : " +
-                            TEMPERATURE +
-                            "}");
-
-            entity.setContentType("application/json");
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpPost post = new HttpPost("https://api.openai.com/v1/chat/completions");
             post.setHeader("Content-Type", "application/json");
             post.setHeader("Authorization", "Bearer " + KEY);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            StringEntity entity = new StringEntity(objectMapper.writeValueAsString(chatRequest));
             post.setEntity(entity);
 
             HttpResponse response = client.execute(post);
 
-            if (response.getStatusLine().getStatusCode() != 201) {
+            if (response.getStatusLine().getStatusCode() != 200) {
                 System.out.println("HTTP Error: " + response.getStatusLine().getStatusCode());
                 return null;
             }
@@ -94,15 +89,17 @@ public class InstrucaoService {
             }
             String responseText = responseBuilder.toString();
 
-            Instrucao instrucao = new Instrucao(responseText, LocalDate.now());
-            instrucao.setUsuario(usuario);
-            repository.save(instrucao);
+            OpenAiResponse openAiResponse = objectMapper.readValue(responseText, OpenAiResponse.class);
+            String answer = openAiResponse.getChoices().get(0).getMessage().getContent();
 
-            client.getConnectionManager().shutdown();
+            Instrucao instrucao = new Instrucao(answer, LocalDate.now());
+            instrucao.setUsuario(usuario);
+            usuario.getInstrucao().add(instrucao);
+            repository.save(instrucao);
 
             return instrucao;
 
-        } catch (Exception exception) {
+        } catch (IOException exception) {
             System.out.println(exception.getMessage());
             return null;
         }
@@ -138,5 +135,16 @@ public class InstrucaoService {
         return repository
                 .findById(instrucaoId)
                 .orElseThrow(() -> new RestNotFoundException("Instrução não encontrada"));
+    }
+
+    public Recurso recuperarRecurso(long userId)
+    {
+        log.info("buscando recurso com id: " + userId);
+
+        Usuario usuario = usuarioRepository
+                .findById(userId)
+                .orElseThrow(() -> new RestNotFoundException("Usuario não encontrado"));
+
+        return usuario.getRecurso();
     }
 }

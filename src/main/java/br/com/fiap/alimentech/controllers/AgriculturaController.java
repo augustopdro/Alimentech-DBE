@@ -18,7 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api/sono")
+@RequestMapping("/api/agricultura")
 @SecurityRequirement(name = "bearer-key")
 public class AgriculturaController {
 
@@ -46,7 +46,7 @@ public class AgriculturaController {
                 linkTo(methodOn(AgriculturaController.class).recuperarRecurso(userId)).withRel("recuperar")
         );
 
-        return ResponseEntity.created(linkTo(methodOn(AgriculturaController.class).recursoService.cadastrarRecurso(recurso, userId)).toUri())
+        return ResponseEntity.created(linkTo(methodOn(AgriculturaController.class).cadastrarRecurso(recurso, userId)).toUri())
                 .body(entityModel);
     }
 
@@ -63,19 +63,19 @@ public class AgriculturaController {
         );
     }
 
-    @PostMapping("{userId}/instrucao")
-    public ResponseEntity<EntityModel<Instrucao>> cadastrarInstrucao(@Valid @RequestBody Recurso recurso, @PathVariable long userId)
+    @GetMapping("{userId}/instrucao")
+    public ResponseEntity<EntityModel<Instrucao>> cadastrarInstrucao(@PathVariable long userId)
     {
         log.info("Cadastrando recurso");
-        Instrucao responseService = instrucaoService.cadastrarInstrucao(userId, recurso);
+        Instrucao responseService = instrucaoService.cadastrarInstrucao(userId);
 
         var entityModel = EntityModel.of(
                 responseService,
-                linkTo(methodOn(AgriculturaController.class).cadastrarRecurso(recurso, userId)).withSelfRel(),
+                linkTo(methodOn(AgriculturaController.class).cadastrarInstrucao(userId)).withSelfRel(),
                 linkTo(methodOn(AgriculturaController.class).recuperarRecurso(userId)).withRel("recuperar")
         );
 
-        return ResponseEntity.created(linkTo(methodOn(AgriculturaController.class).instrucaoService.cadastrarInstrucao(userId, recurso)).toUri())
+        return ResponseEntity.created(linkTo(methodOn(AgriculturaController.class).cadastrarInstrucao(userId)).toUri())
                 .body(entityModel);
     }
 

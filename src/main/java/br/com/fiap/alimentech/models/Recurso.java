@@ -27,8 +27,7 @@ public class Recurso {
     @Column(name = "prazo_producao")
     private String prazoParaColheita;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
+    @OneToOne
     @JsonIgnore
     private Usuario usuario;
 

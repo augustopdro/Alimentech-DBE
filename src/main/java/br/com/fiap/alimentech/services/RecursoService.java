@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class RecursoService {
 
@@ -24,20 +27,33 @@ public class RecursoService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Recurso cadastrarRecurso(Recurso recurso, long userId)
-    {
-        Usuario usuario = usuarioRepository
-                .findById(userId)
-                .orElseThrow(() -> new RestNotFoundException("Usuario não encontrado"));
 
-        recurso.setUsuario(usuario);
+    public Recurso cadastrarRecurso(Recurso novoRecurso, long userId) {
+        Usuario usuario = usuarioRepository.findById(userId)
+                .orElseThrow(() -> new RestNotFoundException("Usuário não encontrado"));
 
-        return repository.save(recurso);
+        Recurso recursoExistente = usuario.getRecurso();
+
+        if (recursoExistente != null) {
+            recursoExistente.setPrazoParaColheita(novoRecurso.getPrazoParaColheita());
+            recursoExistente.setDinheiroDisponivel(novoRecurso.getDinheiroDisponivel());
+            recursoExistente.setAreaDoTerreno(novoRecurso.getAreaDoTerreno());
+
+            repository.save(recursoExistente);
+        } else {
+            novoRecurso.setUsuario(usuario);
+            recursoExistente = repository.save(novoRecurso);
+            usuario.setRecurso(recursoExistente);
+            usuarioRepository.save(usuario);
+        }
+
+        return recursoExistente;
     }
+
 
     public Recurso recuperarRecurso(long userId)
     {
-        log.info("buscando objetivo com id: " + userId);
+        log.info("buscando recurso com id: " + userId);
 
         Usuario usuario = usuarioRepository
                 .findById(userId)

@@ -25,23 +25,24 @@ public class Usuario implements UserDetails {
 
     @NotNull
     @Pattern(regexp = "^(?=.*[a-zA-Z])[a-zA-Z\s]{3,}$", message = "Nome deve conter no mínimo 3 caracteres e nenhum pode ser numérico")
-    @Column(nullable = false)
+    @Column(name = "nome_usuario", nullable = false)
     private String nome;
 
     @NotNull
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Email só pode conter caracteres alfanuméricos e os especiais: _ . - @")
-    @Column(nullable = false, unique = true)
+    @Column(name = "email_usuario", nullable = false, unique = true)
     private String email;
 
     @NotNull
     @NotBlank 
     @Size(min = 8, max = 60, message = "Senha deve ter tamanho entre 8 e 60 caracteres")
-    @Column(nullable = false)
+    @Column(name = "senha_usuario", nullable = false)
     private String senha;
 
     @OneToOne
     private Recurso recurso;
 
+    @Column(name = "cidade_usuario")
     private String cidade;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -78,7 +79,7 @@ public class Usuario implements UserDetails {
         return true;
     }
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome, String email, String senha, String cidade) {
         if(!setNome(nome))
             throw new IllegalArgumentException("Nome inválido");
 
@@ -87,6 +88,8 @@ public class Usuario implements UserDetails {
 
         if(!setSenha(senha))
             throw new IllegalArgumentException("Senha inválida");
+
+        this.cidade = cidade;
     }
 
     public boolean setNome(String novoNome) {

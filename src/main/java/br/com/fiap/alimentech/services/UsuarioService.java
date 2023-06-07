@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioService {
-	Logger log = LoggerFactory.getLogger(RegistroService.class);
+	Logger log = LoggerFactory.getLogger(UsuarioService.class);
 
 	private UsuarioRepository repository;
 	private AuthenticationManager manager;
@@ -55,9 +55,12 @@ public class UsuarioService {
 		}
 
 		if(usuario.senha() != null && !usuario.senha().equals(repositoryResponse.getSenha())) {
-			isUpdatable = repositoryResponse.setSenha(usuario.senha());
+			isUpdatable = repositoryResponse.setSenha(encoder.encode(usuario.senha()));
 		}
 
+		if(usuario.cidade() != null && !usuario.cidade().equals(repositoryResponse.getCidade())) {
+			repositoryResponse.setCidade(usuario.cidade());
+		}
 		if(isUpdatable) {
 			var respostaAtualizacao = atualizarUsuario(repositoryResponse);
 
@@ -65,7 +68,8 @@ public class UsuarioService {
 					respostaAtualizacao.getId(),
 					respostaAtualizacao.getNome(),
 					respostaAtualizacao.getEmail(),
-					respostaAtualizacao.getSenha()
+					respostaAtualizacao.getSenha(),
+					respostaAtualizacao.getCidade()
 			);
 		}
 

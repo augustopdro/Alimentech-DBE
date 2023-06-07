@@ -33,12 +33,12 @@ public class UsuarioController {
     {
         var usuarioCadastrado = usuarioService.cadastrar(usuario);
 
-        var responseDTO = new UsuarioResponseDTO(usuarioCadastrado.getId(), usuarioCadastrado.getNome(), usuarioCadastrado.getEmail(), usuarioCadastrado.getSenha());
+        var responseDTO = new UsuarioResponseDTO(usuarioCadastrado.getId(), usuarioCadastrado.getNome(), usuarioCadastrado.getEmail(), usuarioCadastrado.getSenha(), usuarioCadastrado.getCidade());
 
         var entityModel = EntityModel.of(
                 responseDTO,
                 linkTo(methodOn(UsuarioController.class).cadastrar(usuario)).withSelfRel(),
-                linkTo(methodOn(UsuarioController.class).atualizar(new UsuarioUpdateDTO(usuarioCadastrado.getNome(), usuarioCadastrado.getEmail(), usuarioCadastrado.getSenha()), usuarioCadastrado.getId())).withRel("atualizar"),
+                linkTo(methodOn(UsuarioController.class).atualizar(new UsuarioUpdateDTO(usuarioCadastrado.getNome(), usuarioCadastrado.getEmail(), usuarioCadastrado.getSenha(), usuarioCadastrado.getCidade()), usuarioCadastrado.getId())).withRel("atualizar"),
                 linkTo(methodOn(UsuarioController.class).logar(new LoginDTO(usuarioCadastrado.getEmail(), usuarioCadastrado.getSenha()))).withRel("logar")
         );
 
@@ -59,7 +59,7 @@ public class UsuarioController {
         return EntityModel.of(
                 responseService,
                 linkTo(methodOn(UsuarioController.class).atualizar(usuario, id)).withSelfRel(),
-                linkTo(methodOn(UsuarioController.class).cadastrar(new Usuario(usuario.nome(), usuario.email(), usuario.senha()))).withRel("cadastrar"),
+                linkTo(methodOn(UsuarioController.class).cadastrar(new Usuario(usuario.nome(), usuario.email(), usuario.senha(), usuario.cidade()))).withRel("cadastrar"),
                 linkTo(methodOn(UsuarioController.class).logar(new LoginDTO(usuario.email(), usuario.senha()))).withRel("logar")
         );
     }

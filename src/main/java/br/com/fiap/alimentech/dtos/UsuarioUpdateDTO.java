@@ -4,5 +4,6 @@ public record UsuarioUpdateDTO
 (
     String nome,
     String email,
-    String senha
+    String senha,
+    String cidade
 ) {}
