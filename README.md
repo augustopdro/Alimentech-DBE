@@ -2,6 +2,13 @@
 
 O projeto Alimentech visa oferecer uma solução para pessoas com insegurança alimentar moderada ou alta, que enfrentam dificuldades para obter alimentos que atendam às suas necessidades nutricionais básicas. A proposta é desenvolver um programa educacional online que utiliza inteligência artificial generativa para ensinar técnicas de agricultura sustentável, como agricultura vertical e aquaponia. A plataforma proporcionará orientações personalizadas de acordo com as características e recursos disponíveis para cada usuário, tornando a produção de alimentos de qualidade acessível.
 
+## Integrantes do grupo:
+- RM 93442 – Gabriel Hitoshi Furone Yokogawa
+- RM 93150 – Guilherme Martins Nascimento
+- RM 93205 – Luis Fernando Nascimento de Oliveira
+- RM 94990 – Pedro Augusto Pereira Viana
+- RM 95800 – Yasmin Cabral Dias
+
 ## Visão Geral
 A solução da Alimentech é um aplicativo móvel que oferece uma interface acessível e de fácil utilização para pessoas que desejam aprender práticas de agricultura sustentável. O aplicativo utiliza inteligência artificial generativa, especificamente o ChatGPT, para gerar conteúdo informativo e instrucional adaptado às necessidades e recursos de cada usuário. Os principais recursos são:
 
