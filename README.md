@@ -1,49 +1,88 @@
-# DreamControl API
+# Alimentech API
 
-Uma API sofisticada de rastreamento do sono projetada para capacitar os usuários a alcançarem seus objetivos de sono e manterem padrões saudáveis de sono. O DreamControl oferece um conjunto abrangente de recursos e utiliza tecnologias avançadas para fornecer uma experiência de usuário perfeita. Construída como uma API REST baseada em Java, ela utiliza Spring Framework, incluindo também Spring Data, Spring Security e Spring HATEOAS.
+O projeto Alimentech visa oferecer uma solução para pessoas com insegurança alimentar moderada ou alta, que enfrentam dificuldades para obter alimentos que atendam às suas necessidades nutricionais básicas. A proposta é desenvolver um programa educacional online que utiliza inteligência artificial generativa para ensinar técnicas de agricultura sustentável, como agricultura vertical e aquaponia. A plataforma proporcionará orientações personalizadas de acordo com as características e recursos disponíveis para cada usuário, tornando a produção de alimentos de qualidade acessível.
 
 ## Visão Geral
-A API do DreamControl serve como a base para um aplicativo móvel que permite aos usuários rastrear facilmente seus padrões de sono e definir metas de sono personalizadas. Ao utilizar esta API, os usuários podem:
+A solução da Alimentech é um aplicativo móvel que oferece uma interface acessível e de fácil utilização para pessoas que desejam aprender práticas de agricultura sustentável. O aplicativo utiliza inteligência artificial generativa, especificamente o ChatGPT, para gerar conteúdo informativo e instrucional adaptado às necessidades e recursos de cada usuário. Os principais recursos são:
 
-- **Registro de Sono:** Registrar períodos de sono para manter um histórico detalhado de sono.
-- **Definição de Metas de Sono**: Estabelecer metas de sono, como dormir por um número específico de horas em um intervalo de datas definido.
-- **Histórico de Sono:** Acessar um registro abrangente de registros de sono para acompanhar os padrões de sono ao longo do tempo.
-- **Relatório de Sono:** Gerar relatórios detalhados indicando o número de horas dormidas e o progresso em relação às metas de sono.
-- **Gerenciamento de Usuários:** Registrar, fazer login e gerenciar seus perfis, garantindo uma experiência personalizada e segura.
-- **Autenticação e Segurança:** Utilizar autenticação baseada em JWT para aumentar a segurança das contas de usuário.
+- **Perfil do Usuário:** Após se cadastrar, os usuários criam um perfil fornecendo informações básicas, como nome, e-mail e senha.
+- **Login**: Os usuários podem fazer login no aplicativo usando o e-mail e a senha cadastrados.
+- **Questionário:** Após o login, os usuários são solicitados a preencher um questionário que coleta informações importantes sobre sua localização, espaço disponível para o cultivo, prazo desejado para a colheita e capacidade de investimento.
+- **Instruções Geradas pela IA:** As informações coletadas dos usuários são processadas pelo ChatGPT, que gera um guia abrangente e didático, com instruções passo a passo, para a montagem de uma área de cultivo com base nos requisitos específicos do usuário.
+- **Salvar Instruções:** Os usuários têm a opção de salvar as instruções geradas para consultas futuras, permitindo que eles as acessem a qualquer momento.
+- **Assistente de Voz:** O aplicativo também possui um assistente de voz para usuários com dificuldades de leitura ou escrita.
+---
 
-# Recursos Principais
-## Arquitetura RESTful
-A API do DreamControl é construída com base nos princípios da Representação de Estado Transferível (REST), facilitando a integração com uma ampla variedade de plataformas e fornecendo um design de API consistente e intuitivo.
+## Pré-requisitos
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Spring Framework
-Aproveitando o poder do Spring Framework, a API do DreamControl oferece injeção de dependência robusta, inversão de controle e capacidades de programação orientada a aspectos. Ele promove um código modular e escalável, permitindo um desenvolvimento e manutenção rápidos.
+---
 
-## Spring Data
-Ao utilizar o Spring Data, a API do DreamControl se integra perfeitamente a vários bancos de dados, garantindo uma persistência e gerenciamento eficientes de dados. Ele simplifica a implementação de camadas de acesso a dados, aprimorando o desempenho e a confiabilidade do sistema como um todo.
+## Teste os endpoints por aqui
+- Postman: https://www.postman.com/altimetry-astronaut-37339768/workspace/alimentech/collection/23202593-1f7b59a0-b414-465c-abaa-9aaa09dabb14?action=share&creator=23202593
 
-## Spring Security
-O DreamControl API incorpora o Spring Security, um framework de segurança altamente personalizável e confiável, para proteger contas de usuário e dados sensíveis. A implementação de autenticação baseada em JWT aumenta a segurança, proporcionando uma experiência de login perfeita para os usuários.
+---
 
-## Spring HATEOAS
-O DreamControl API adota os princípios de Hypermedia as the Engine of Application State (HATEOAS) usando o Spring HATEOAS. Ele enriquece as respostas da API com links de hipermídia, permitindo que os clientes naveguem na API com facilidade e descubram os recursos disponíveis.
+## Clonando o projeto
+- Clone o repositório em sua máquina:
 
-## Desenvolvimento Orientado a Testes
-Seguindo as melhores práticas, a API do DreamControl possui testes unitários abrangentes usando JUnit e Mockito. Isso garante a estabilidade e a correção do código, fornecendo uma base sólida para o desenvolvimento e manutenção futuros.
+```bash
+{
+	git clone https://github.com/augustopdro/alimentech-dbe.git
+}
+```
+
+---
+---
+
+## Entre no diretório do projeto:
+
+```bash
+{
+	cd seu-projeto
+}
+```
+
+---
+---
+
+## Executando o projeto
+- Navegue até a pasta do projeto clonado e execute o seguinte comando:
+
+```bash
+{
+	docker-compose up
+}
+```
+
+O Docker Compose irá baixar e executar as imagens necessárias e o projeto será executado em localhost:8080.
+
+---
+---
+
+## Configurações
+- A porta padrão da API é 8080. Se desejar mudá-la, altere a configuração no arquivo docker-compose.yml.
+
+- O usuário do banco de dados padrão é normaluser e a senha é 140203. Se desejar alterar essas configurações, modifique o arquivo docker-compose.yml e o arquivo Dockerfile.db.
+
+- Os dados do banco de dados são persistidos em um volume chamado db-volume. Se você deseja persistir os dados em um diretório diferente, altere a configuração no arquivo docker-compose.yml.
+
+---
+---
 
 ---
 
 ## Endpoints
 - Usuário
   - [Cadastrar](#cadastrar)
-  - [Atualizar Cadastro](#atualizar-usuario)
+  - [Atualizar Cadastro](#atualizar-cadastro)
   - [Login](#login)
-- Sono
-  - [Objetivo](#objetivo)
-  - [Registrar](#registrar)
-  - [Deletar Registro](#deletar-registro)
+- Agricultura
+  - [Recurso](#recurso)
+  - [Deletar Instrução](#deletar-instrução)
   - [Histórico](#histórico)
-  - [Relatório](#relatório)
+  - [Instrução](#instrução)
 
 ---
 
@@ -55,6 +94,7 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
 | nome | string | sim | é o nome do usuário, deve respeitar o Regex(^[a-zA-Z]{3,}$)
 | email | string | sim | é o email do usuário, deve respeitar o ReGex(^[A-Za-z0-9+_.-]+@(.+)$)
 | senha | string | sim | é a senha do usuário, deve ter no mínimo 8 caracteres
+| cidade | string | sim | é a cidade do usuário
 
 
 **Exemplo de corpo do request**
@@ -62,7 +102,8 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
 {
 	"nome": "Pedro Augusto",
 	"email": "pedro.silva@gmail.com",
-	"senha": "Senha123"
+	"senha": "Senha123",
+	"cidade": "São Paulo"
 }
 ```
 
@@ -73,6 +114,7 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
     "nome": "Pedro Augusto",
     "email": "pedro.silva@gmail.com",
     "senha": "$2a$10$GqssjsKV5bTF1h9g0G13X.mEKH5WyKI6JxKNNnI1sdN4pLqA9jjqy",
+    "cidade": "São Paulo"
     "_links": {
         "self": {
             "href": "http://localhost:8080/api/usuario/cadastrar"
@@ -103,9 +145,10 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
 **Exemplo de corpo do request**
 ```js
 {
-	"nome": "Thiago Matos",
-	"email": "thdevs@live.com",
-	"senha": "Senha123"
+	"nome": "Pedro Augusto",
+	"email": "pedro.silva@gmail.com",
+	"senha": "Senha123",
+	"cidade": "Rio de Janeiro"
 }
 ```
 
@@ -168,54 +211,58 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
 
 ---
 
-## Objetivo
-`POST` /api/sono/{userId}/objetivo
+## Recurso
+`POST` /api/agricultura/{userId}/recurso
 
 | Campo | Tipo | Obrigatório | Descrição
 |:-------:|:------:|:-------------:|--
-| duracao | int | sim | é o prazo em dias que o usuário deseja alcançar o objetivo, deve ser maior que zero
-| objetivo | int | sim | é o objetivo em horas que o usuário pretende alcançar no tempo definido, deve ser maior que zero e menor ou igual que ***duracao * 16***
+| areaDoTerreno | string | sim | é a area do terreno disponivel para plantio
+| dinheiroDisponivel | string | sim | é o dinheiro que o usuario tem para investir em sementes
+| prazoParaColheita | string | sim | é o prazo que o usuario está disposto a esperar pela colheita
+
 
 
 **Exemplo de corpo do request**
 ```js
 {
-	"duracao": 15,
- 	"objetivo": 120
+    "areaDoTerreno": "10 metros",
+    "dinheiroDisponivel": "70 reais",
+    "prazoParaColheita": "6 meses"
 }
 ```
 
 **Códigos de Resposta**
 | Código | Descrição
 |:-:|-
-| 201 | Objetivo cadastrado com sucesso
+| 201 | Recurso cadastrado com sucesso
 | 400 | Erro na requisição
 | 404 | Usuario não encontrado
 | 422 | Erro ao processar a requisição
 
 ---
 
-`GET` /api/sono/{userId}/objetivo
+`GET` /api/agricultura/{userId}/recurso
 
 **Exemplo de corpo do response**
 
 | Campo | Tipo | Descrição
 |:-------:|:------:|-------------
-| duracao | int | é o prazo em dias que o usuário deseja alcançar o objetivo, deve ser maior que zero
-| objetivo | int | é o objetivo em horas que o usuário pretende alcançar no tempo definido
-| dataCriacao | é a data em que o objetivo foi criado
+| areaDoTerreno | string | é a area do terreno disponivel para plantio
+| dinheiroDisponivel | string | é o dinheiro que o usuario tem para investir em sementes
+| prazoParaColheita | string | é o prazo que o usuario está disposto a esperar pela colheita
 
 ```js
 {
-    "duracao": 15,
-    "objetivo": 120,
-    "dataCriacao": "2023-05-22",
+    "id": 1,
+    "areaDoTerreno": "10 metros",
+    "dinheiroDisponivel": "70 reais",
+    "prazoParaColheita": "6 meses",
     "_links": {
         "self": {
-            "href": "http://localhost:8080/api/sono/1/objetivo"
+            "href": "http://localhost:8080/api/agricultura/1/recurso"
         },
-        "cadastrar": {
-            "href": "http://localhost:8080/api/sono/1/objetivo"
+        "recuperar": {
+            "href": "http://localhost:8080/api/agricultura/1/recurso"
         }
     }
 }
@@ -224,7 +271,7 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
 **Códigos de Resposta**
 | Código | Descrição
 |:-:|-
-| 200 | Objetivo recuperado com sucesso
+| 200 | Recurso recuperado com sucesso
 | 404 | Usuario não encontrado
 | 404 | Objetivo não encontrado
 | 400 | Erro na requisição
@@ -233,35 +280,9 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
 
 ---
 
-## Registrar
-`POST` /api/sono/{userId}/registrar
 
-| Campo | Tipo | Obrigatório | Descrição
-|:-------:|:------:|:-------------:|--
-| data | LocalDate | sim | é a data que o usuário quer fazer o registro
-| tempo | LocalTime | sim | é o período de sono do usuário na data em questão
-
-**Exemplo de corpo do request**
-```js
-{
-	"data": "2023-03-02",
-	"tempo": "22:00:00"
-}
-```
-
-**Códigos de Resposta**
-| Código | Descrição
-|:-:|-
-| 201 | Usuario cadastrado com sucesso
-| 400 | Erro na requisição
-| 404 | Usuario não encontrado
-
----
-
----
-
-## Deletar Registro
-`DELETE` /api/sono/{userId}/deletar/{registroId}
+## Deletar Instrução
+`DELETE` /api/agricultura/{userId}/deletar/{instrucaoId}
 
 **Códigos de Resposta**
 | Código | Descrição
@@ -275,11 +296,11 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
 ---
 
 ## Histórico
-`GET` /api/sono/{userId}/historico
+`GET` /api/agricultura/{userId}/historico
 
 | Campo | Tipo | Descrição
 |:-------:|:------:|--
-| registros | ArrayList<Registro> | é a lista que contém os registros efetuados dentro da duração do objetivo.
+| instrucao | ArrayList<Instrucao> | é a lista que contém as instruções geradas pelo chatGPT.
 
 **Exemplo de corpo do response**
 ```js
@@ -287,13 +308,13 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
     "content": [
         {
             "id": 1,
-            "data": "2023-04-03",
-            "tempo": "07:00:00"
+            "texto": "Texto de resposta gerado pela api",
+            "data": "2023-04-03"
         },
         {
             "id": 2,
-            "data": "2023-05-23",
-            "tempo": "08:00:00"
+            "texto": "Texto de resposta gerado pela api",
+            "data": "2023-04-03"
         }
     ],
     "number": 0,
@@ -303,10 +324,10 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
     "last": true,
     "_links": {
         "self": {
-            "href": "http://localhost:8080/api/sono/1/historico"
+            "href": "http://localhost:8080/api/agricultura/1/historico"
         },
         "relatorio": {
-            "href": "http://localhost:8080/api/sono/1/relatorio"
+            "href": "http://localhost:8080/api/agricultura/1/recurso"
         }
     }
 }
@@ -324,38 +345,28 @@ Seguindo as melhores práticas, a API do DreamControl possui testes unitários a
 
 ---
 
-## Relatório
-`GET` /api/sono/{userId}/relatorio
+## Instrução
+`GET` /api/agricultura/{userId}/instrucao
 
 | Campo | Tipo | Descrição
 |-------|------|--
-| inicio | LocalDate | é a data inicial do relatório
-| fim | LocalDate | é a data final do relatório
-| tempoTotal | Duration | é o tempo total de sono que o usuário teve durante o período de tempo
-| objetivo | String | é o objetivo inicial que o usuário tinha definido
+| texto | string | é o texto gerado pelo gpt
+| data | LocalDate | é a data que o texto foi gerado
+
 
 **Exemplo de corpo do response**
 ```js
 {
-  "inicio": "2023-05-22",
-          "fim": "2023-06-06",
-          "tempoTotal": "16H",
-          "objetivo": 120,
-          "_links": {
-    "self": {
-      "href": "http://localhost:8080/api/sono/1/relatorio"
-    },
-    "historico": {
-      "href": "http://localhost:8080/api/sono/1/historico"
-    }
-  }
+	"id": 1,
+	"texto": "Texto de resposta gerado pela api",
+	"data": "2023-04-03"
 }
 ```
 
 **Códigos de Resposta**
 | Código | Descrição
 |:-:|-
-| 200 | Relatorio recuperado com sucesso
+| 200 | Instrução recuperada com sucesso
 | 400 | Erro na requisição
 | 404 | Usuario não encontrado
 
